@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: my-node-app-monitor
+  namespace: monitoring          # ServiceMonitors usually live in the same namespace as Prometheus
+  labels:
+    release: monitoring          # must match the label Prometheus Operator is configured to watch
+spec:
+  namespaceSelector:
+    matchNames:
+      - default                  # the namespace where our app's Service actually lives
+  selector:
+    matchLabels:
+      app: my-node-app-service-monitor   # we'll add this label to the Service next
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
