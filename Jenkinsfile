@@ -15,7 +15,7 @@ pipeline {
     stage('Install Dependencies') {
       steps {
         sh '''
-          docker run --rm -v "$WORKSPACE":/app -w /app node:20-alpine npm ci
+	  docker run --rm --volumes-from jenkins -w "$WORKSPACE" node:20-alpine npm ci
         '''
       }
     }
@@ -23,7 +23,7 @@ pipeline {
     stage('Unit Tests') {
       steps {
         sh '''
-          docker run --rm -v "$WORKSPACE":/app -w /app node:20-alpine npm test
+	  docker run --rm --volumes-from jenkins -w "$WORKSPACE" node:20-alpine npm test
         '''
       }
     }
